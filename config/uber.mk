@@ -95,15 +95,19 @@ endif
 ifeq (true,$(STRICT_ALIASING))
   OPT1 := (strict)
 endif
+
 ifeq (true,$(GRAPHITE_OPTS))
   OPT2 := (graphite)
 endif
+
 ifeq (true,$(KRAIT_TUNINGS))
-  OPT3 := ($(TARGET_CPU_VARIANT))
+  OPT3 := (tuned_for_$(TARGET_CPU_VARIANT))
 endif
+
 ifeq (true,$(ENABLE_GCCONLY))
   OPT4 := (gcconly)
 endif
+
 ifeq (true,$(CLANG_O3))
   OPT5 := (clang_O3)
 endif
