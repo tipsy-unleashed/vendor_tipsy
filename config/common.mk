@@ -38,6 +38,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/tipsy/prebuilt/common/etc/init.local.rc:root/init.slim.rc
 
+# Include LatinIME dictionaries
+PRODUCT_PACKAGE_OVERLAYS += vendor/tipsy/overlay/dictionaries
+
 # Copy latinime for gesture typing
 PRODUCT_COPY_FILES += \
     vendor/tipsy/prebuilt/common/lib/libjni_latinimegoogle.so:system/lib/libjni_latinimegoogle.so
@@ -90,7 +93,8 @@ PRODUCT_PACKAGES += \
     BluetoothExt \
     LockClock \
     OmniSwitch \
-    DashClock
+    DashClock \
+    KernelAdiutor
 
 #    SlimFileManager removed until updated
 
@@ -100,11 +104,17 @@ PRODUCT_PACKAGES += \
     e2fsck \
     mke2fs \
     tune2fs \
-    mount.exfat \
-    fsck.exfat \
-    mkfs.exfat \
     ntfsfix \
     ntfs-3g
+
+WITH_EXFAT ?= true
+ifeq ($(WITH_EXFAT),true)
+TARGET_USES_EXFAT := true
+PRODUCT_PACKAGES += \
+    mount.exfat \
+    fsck.exfat \
+    mkfs.exfat
+endif
 
 # Stagefright FFMPEG plugin
 PRODUCT_PACKAGES += \
@@ -120,6 +130,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 -include vendor/extra/product.mk
 
 PRODUCT_PACKAGE_OVERLAYS += vendor/tipsy/overlay/common
+
+# Busybox
+PRODUCT_PACKAGES += \
+    Busybox
 
 # Viper4Android
 PRODUCT_COPY_FILES += \
@@ -149,10 +163,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 vendor/tipsy/prebuilt/common/app/adaway.apk:system/app/adaway.apk
 
-# Kerneladiutor
-PRODUCT_COPY_FILES += \
-vendor/tipsy/prebuilt/common/app/kerneladiutor.apk:system/app/kerneladiutor.apk
-
 # Layers Manager
 PRODUCT_COPY_FILES += \
 vendor/tipsy/prebuilt/common/app/layersmanager.apk:system/app/layersmanager.apk
@@ -162,25 +172,25 @@ PRODUCT_COPY_FILES += \
 vendor/tipsy/prebuilt/common/app/Layers_backup_restore.apk:system/app/Layers_backup_restore.apk
 
 # Versioning System
-# tipsyLP first version.
+# tipsyM first version.
 PRODUCT_VERSION_MAJOR = 6.0.1
-PRODUCT_VERSION_MINOR = Chimay
-PRODUCT_VERSION_MAINTENANCE = v3.7
+PRODUCT_VERSION_MINOR = Geuze
+PRODUCT_VERSION_MAINTENANCE = v4.1
 ifdef TIPSY_BUILD_EXTRA
-    TIPSY_POSTFIX := -$(TIPSY_BUILD_EXTRA)
+    TIPSY_POSTFIX := $(TIPSY_BUILD_EXTRA)
 endif
 ifndef TIPSY_BUILD_TYPE
     TIPSY_BUILD_TYPE := Release
-    TIPSY_POSTFIX := -$(shell date +"%Y%m%d-%H%M")
+    TIPSY_POSTFIX := $(shell date +"%Y%m%d-%H%M")
 endif
 
 # Set all versions
-TIPSY_VERSION := Tipsy-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)-$(TIPSY_POSTFIX)
-TIPSY_MOD_VERSION := Tipsy-$(TIPSY_BUILD)-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)-$(TIPSY_POSTFIX)
+TIPSY_VERSION := Tipsy-$(TIPSY_BUILD)-$(PRODUCT_VERSION_MINOR)-$(PRODUCT_VERSION_MAINTENANCE)-$(TIPSY_POSTFIX)
+TIPSY_MOD_VERSION := Tipsy-$(TIPSY_BUILD)-$(PRODUCT_VERSION_MINOR)-$(PRODUCT_VERSION_MAINTENANCE)-$(TIPSY_POSTFIX)
 
 PRODUCT_PROPERTY_OVERRIDES += \
     BUILD_DISPLAY_ID=$(BUILD_ID) \
-    tipsy.ota.version=$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE) \
+    tipsy.ota.version=$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)-$(shell date) \
     ro.tipsy.version=$(TIPSY_VERSION) \
     ro.modversion=$(TIPSY_MOD_VERSION) \
     ro.tipsy.buildtype=$(TIPSY_BUILD_TYPE)
