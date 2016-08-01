@@ -94,7 +94,8 @@ PRODUCT_PACKAGES += \
     LockClock \
     OmniSwitch \
     DashClock \
-    KernelAdiutor
+    KernelAdiutor \
+    masquerade
 
 #    SlimFileManager removed until updated
 
@@ -163,19 +164,12 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 vendor/tipsy/prebuilt/common/app/adaway.apk:system/app/adaway.apk
 
-# Layers Manager
-PRODUCT_COPY_FILES += \
-vendor/tipsy/prebuilt/common/app/layersmanager.apk:system/app/layersmanager.apk
-
-# Layers_backup_restore
-PRODUCT_COPY_FILES += \
-vendor/tipsy/prebuilt/common/app/Layers_backup_restore.apk:system/app/Layers_backup_restore.apk
 
 # Versioning System
 # tipsyM first version.
 PRODUCT_VERSION_MAJOR = 6.0.1
-PRODUCT_VERSION_MINOR = Geuze
-PRODUCT_VERSION_MAINTENANCE = v4.3
+PRODUCT_VERSION_MINOR = OMS
+PRODUCT_VERSION_MAINTENANCE = v4.4
 ifdef TIPSY_BUILD_EXTRA
     TIPSY_POSTFIX := $(TIPSY_BUILD_EXTRA)
 endif
